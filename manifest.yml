@@ -1,7 +1,7 @@
 ---
 applications:
 - name: banking-api-unmsm
-  path: server/target/banking-api-0.0.1-SNAPSHOT.jar
+  path: target/banking-api-0.0.1-SNAPSHOT.jar
   memory: 1GB
   instances: 1
   buildpack: java_buildpack
