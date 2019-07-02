@@ -1,6 +1,7 @@
 package banking;
 
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -19,6 +20,8 @@ import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.i18n.AcceptHeaderLocaleResolver;
 
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 
@@ -80,5 +83,12 @@ public class BankingApplication {
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+	
+	@Bean
+	public LocaleResolver localeResolver() {
+		AcceptHeaderLocaleResolver localeResolver = new AcceptHeaderLocaleResolver();
+		localeResolver.setDefaultLocale(Locale.US);
+		return localeResolver;
 	}
 }

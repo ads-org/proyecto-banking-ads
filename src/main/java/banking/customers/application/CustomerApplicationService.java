@@ -6,6 +6,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import banking.common.application.Notification;
@@ -23,6 +25,9 @@ public class CustomerApplicationService {
 	
 	@Value("${maxPageSize}")
 	private int maxPageSize;
+	
+	@Autowired
+	MessageSource messageSource;
     
 	public CustomerDto create(CustomerDto customerDto) {
 		Customer customer = mapper.map(customerDto, Customer.class);
@@ -45,7 +50,7 @@ public class CustomerApplicationService {
 	private Notification getValidation(int page, int pageSize) {
 		Notification notification = new Notification();
 		if (pageSize > maxPageSize) {
-			notification.addError("Page size can not be greater than 100");
+			notification.addError(messageSource.getMessage("page.size.cannot.greate", null, LocaleContextHolder.getLocale()));
 		}
 		return notification;
 	}

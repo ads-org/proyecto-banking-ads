@@ -1,13 +1,13 @@
 package banking.transactions.infrastructure.hibernate.repository;
 
+import java.util.Date;
 import java.util.List;
 
-import org.hibernate.Criteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.ProjectionList;
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
+import javax.persistence.TemporalType;
+
+import org.hibernate.SQLQuery;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,28 +28,55 @@ public class TransactionHibernateRepository extends BaseHibernateRepository<Tran
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<ResponseTransferHistoryDto> get(String accountNumber, int page, int pageSize) {
-						
-		List<ResponseTransferHistoryDto> transactions = null;
-		Criteria criteria = getSession().createCriteria(Transaction.class, "a");
+	public List<ResponseTransferHistoryDto> get(String accountNumber, Date startDate, Date endDate, int page, int pageSize) {
 		
-		ProjectionList projList = Projections.projectionList();
-		projList.add(Projections.property("a.id"),"id");
-		projList.add(Projections.property("b.number"),"accountOrigin");
-		projList.add(Projections.property("c.number"),"accountDestination");
-		projList.add(Projections.property("a.mount"), "mount");
-		projList.add(Projections.property("a.dateTransfer"), "dateTransfer");
-		criteria.setProjection(projList);
+		List<ResponseTransferHistoryDto> transactions = null;
+		
+		StringBuilder sql = new StringBuilder();
+		
+		sql.append("SELECT  ");
+		sql.append("	a.transaction_id as id,");
+		sql.append("	b.`number` as accountOrigin, " );
+		sql.append("	c.`number` as accountDestination, ");
+		sql.append("	a.mount as mount, ");
+		sql.append("	CONVERT_TZ(a.date_transfer,'+00:00','-05:00') as dateTransfer ");
+		sql.append("FROM `transaction` a ");
+		sql.append("LEFT JOIN bank_account b ON a.account_origin_id = b.bank_account_id ");
+		sql.append("LEFT JOIN bank_account c ON a.account_destination_id = c.bank_account_id ");
+		sql.append("WHERE (b.`number` = :accountNumber OR c.`number` = :accountNumber) ");
 						
-		criteria.createAlias("a.accountOrigin", "b");		
-		criteria.createAlias("a.accountDestination", "c");		
-		criteria.add(Restrictions.or(Restrictions.eq("b.number", accountNumber), 
-				Restrictions.eq("c.number",accountNumber)));		
-		criteria.addOrder(Order.asc("a.dateTransfer"));
-		criteria.setFirstResult(page);
-		criteria.setMaxResults(pageSize);
-		criteria.setResultTransformer(Transformers.aliasToBean(ResponseTransferHistoryDto.class));
-		transactions = criteria.list();
+		if (startDate != null) {
+			sql.append("AND a.date_transfer >= :fechaInicio ");			
+		}
+		
+		if (endDate != null) {
+			sql.append("AND a.date_transfer < :fechaFin  ");			
+		}
+		
+		sql.append("ORDER BY a.date_transfer DESC ");
+		sql.append("LIMIT :page, :pageSize");
+		
+		SQLQuery query = getSession().createNativeQuery(sql.toString());
+		
+		query.addScalar("id", StandardBasicTypes.LONG);
+		query.addScalar("accountOrigin", StandardBasicTypes.STRING);
+		query.addScalar("accountDestination", StandardBasicTypes.STRING);
+		query.addScalar("mount", StandardBasicTypes.BIG_DECIMAL);
+		query.addScalar("dateTransfer", StandardBasicTypes.TIMESTAMP);
+		
+		if (startDate != null) {
+			query.setParameter("fechaInicio", startDate, TemporalType.DATE);
+		}
+		
+		if (endDate != null) {
+			query.setParameter("fechaFin", endDate, TemporalType.DATE);
+		}
+				
+		query.setParameter("accountNumber", accountNumber);
+		query.setParameter("page", page);
+		query.setParameter("pageSize", pageSize);
+		query.setResultTransformer(Transformers.aliasToBean(ResponseTransferHistoryDto.class));
+		transactions = query.getResultList();			
 		
 		return transactions;
 	}

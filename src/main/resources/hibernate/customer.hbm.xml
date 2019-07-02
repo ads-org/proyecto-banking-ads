@@ -10,6 +10,7 @@
         <property name="firstName" column="first_name"/>
         <property name="lastName" column="last_name"/>
         <property name="isActive" column="active"/>
+        <property name="identityDocument" column="identity_document"/>
         <set name="bankAccounts" inverse="true" cascade="all">
             <key column="customer_id" not-null="true"/>
             <one-to-many class="banking.accounts.domain.entity.BankAccount"/>

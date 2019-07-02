@@ -1,7 +1,7 @@
 CREATE TABLE transaction (
   transaction_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-  account_origin_id BIGINT UNSIGNED NOT NULL,
-  account_destination_id BIGINT UNSIGNED NOT NULL,
+  account_origin_id BIGINT UNSIGNED,
+  account_destination_id BIGINT UNSIGNED,
   mount DECIMAL(10,2) NOT NULL,
   user_id BIGINT UNSIGNED,
   date_transfer TIMESTAMP NOT NULL,
