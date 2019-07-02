@@ -9,6 +9,7 @@ public class Customer {
     private String firstName;
     private String lastName;
     private Boolean isActive;
+    private String identityDocument;
     private Set<BankAccount> bankAccounts;
 
 	public Customer() {
@@ -57,4 +58,13 @@ public class Customer {
     public void setBankAccounts(Set<BankAccount> bankAccounts) {
         this.bankAccounts = bankAccounts;
     }
+
+	public String getIdentityDocument() {
+		return identityDocument;
+	}
+
+	public void setIdentityDocument(String identityDocument) {
+		this.identityDocument = identityDocument;
+	}
+    
 }

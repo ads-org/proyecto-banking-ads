@@ -10,7 +10,7 @@
         <property name="dateTransfer" column="date_transfer"  type="java.util.Date"  />
         <property name="mount" column="mount" />           
         <many-to-one name="user" class="banking.users.domain.entity.User" column="user_id" not-null="false"/>
-        <many-to-one name="accountOrigin" class="banking.accounts.domain.entity.BankAccount" column="account_origin_id" not-null="true"/>
-        <many-to-one name="accountDestination" class="banking.accounts.domain.entity.BankAccount" column="account_destination_id" not-null="true"/>
+        <many-to-one name="accountOrigin" class="banking.accounts.domain.entity.BankAccount" column="account_origin_id" not-null="false"/>
+        <many-to-one name="accountDestination" class="banking.accounts.domain.entity.BankAccount" column="account_destination_id" not-null="false"/>
     </class> 
 </hibernate-mapping>

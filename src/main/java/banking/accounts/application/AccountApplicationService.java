@@ -7,6 +7,8 @@ import org.modelmapper.TypeToken;
 import org.modelmapper.config.Configuration.AccessLevel;
 import org.modelmapper.convention.NamingConventions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import banking.accounts.application.dto.BankAccountDto;
@@ -26,6 +28,9 @@ public class AccountApplicationService {
 	
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	MessageSource messageSource;
     
 	public BankAccountDto create(long customerId, BankAccountDto bankAccountDto) throws Exception {
 		Notification notification = this.createValidation(bankAccountDto);
@@ -45,7 +50,7 @@ public class AccountApplicationService {
 		Notification notification = new Notification();
 		BankAccount bankAccount = bankAccountRepository.findByNumber(bankAccountDto.getNumber());
 		if (bankAccount != null) {
-			notification.addError("BankAccount number is already registered");
+			notification.addError(messageSource.getMessage("bankAccount.already.registered", null, LocaleContextHolder.getLocale()));
 		}
 		return notification;
 	}

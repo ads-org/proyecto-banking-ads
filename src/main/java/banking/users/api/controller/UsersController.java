@@ -3,6 +3,8 @@ package banking.users.api.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,9 @@ public class UsersController {
 	@Autowired
 	ResponseHandler responseHandler;
 	
+	@Autowired
+	MessageSource messageSource;
+	
 	@RequestMapping(method = RequestMethod.POST, path = "", consumes = "application/json; charset=UTF-8", produces = "application/json; charset=UTF-8")
 	public ResponseEntity<Object> create(@RequestBody UserDto userDto) throws Exception {
         try {
@@ -46,7 +51,7 @@ public class UsersController {
 			if (userAuthDto.isAuthenticated()) {
 				return new ResponseEntity<Object>(userAuthDto, HttpStatus.OK);
 			}
-			return this.responseHandler.getResponse("Invalid User Name / Password", HttpStatus.NOT_FOUND);
+			return this.responseHandler.getResponse(messageSource.getMessage("user.invalid", null, LocaleContextHolder.getLocale()), HttpStatus.NOT_FOUND);
 		} catch(IllegalArgumentException ex) {
 			return this.responseHandler.getAppCustomErrorResponse(ex.getMessage());
 		} catch(Exception ex) {

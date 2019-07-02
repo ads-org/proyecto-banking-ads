@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import banking.users.application.dto.UserDto;
@@ -37,6 +39,9 @@ public class UserApplicationService {
 	
 	@Value("${maxPageSize}")
 	private int maxPageSize;
+	
+	@Autowired
+	MessageSource messageSource;
     
 	public UserDto create(UserDto userDto) {
 		Notification notification = this.createValidation(userDto);
@@ -54,11 +59,11 @@ public class UserApplicationService {
 	private Notification createValidation(UserDto userDto) {
 		Notification notification = new Notification();
 		if (userDto == null || userDto.getName().equals(RequestBodyType.INVALID.toString())) {
-			notification.addError("Invalid JSON data in request body.");
+			notification.addError(messageSource.getMessage("invalid.json.data", null, LocaleContextHolder.getLocale()));
 		}
 		User user = userRepository.getByName(userDto.getName().trim());
 		if (user != null) {
-			notification.addError("User name is already registered");
+			notification.addError(messageSource.getMessage("username.already.registered", null, LocaleContextHolder.getLocale()));
 		}
 		return notification;
 	}
@@ -114,7 +119,7 @@ public class UserApplicationService {
     private Notification getPaginatedValidation(int page, int pageSize) {
 		Notification notification = new Notification();
 		if (pageSize > maxPageSize) {
-			notification.addError("Page size can not be greater than 100");
+			notification.addError(messageSource.getMessage("page.size.cannot.greate", null, LocaleContextHolder.getLocale()));
 		}
 		return notification;
 	}

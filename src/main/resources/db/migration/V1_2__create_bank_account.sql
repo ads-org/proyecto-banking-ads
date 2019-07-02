@@ -4,6 +4,8 @@ CREATE TABLE bank_account (
   balance DECIMAL(10,2) NOT NULL,
   locked BIT NOT NULL,
   customer_id BIGINT UNSIGNED NOT NULL,
+  created_at_utc DATETIME NOT NULL,
+  updated_at_utc DATETIME NOT NULL,
   PRIMARY KEY(bank_account_id),
   INDEX IX_bank_account_customer_id (customer_id),
   UNIQUE INDEX UQ_bank_account_number (number),
