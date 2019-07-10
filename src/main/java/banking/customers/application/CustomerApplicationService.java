@@ -1,5 +1,6 @@
 package banking.customers.application;
 
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -32,6 +33,8 @@ public class CustomerApplicationService {
 	public CustomerDto create(CustomerDto customerDto) {
 		Customer customer = mapper.map(customerDto, Customer.class);
 		customer.setIsActive(true);
+		customer.setAuditCreate(new Date());
+		customer.setAuditUpdate(new Date());
 		customer = customerRepository.save(customer);
 		customerDto = mapper.map(customer, CustomerDto.class);
         return customerDto;

@@ -1,5 +1,6 @@
 package banking.accounts.application;
 
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -39,6 +40,8 @@ public class AccountApplicationService {
         }
 		BankAccount bankAccount = mapper.map(bankAccountDto, BankAccount.class);
 		bankAccount.setIsLocked(false);
+		bankAccount.setAuditCreate(new Date());
+		bankAccount.setAuditUpdate(new Date());
 		Customer customer = customerRepository.get(customerId);
 		bankAccount.setCustomer(customer);
 		bankAccount = bankAccountRepository.save(bankAccount);

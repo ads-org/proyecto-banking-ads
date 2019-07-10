@@ -1,5 +1,6 @@
 package banking.customers.domain.entity;
 
+import java.util.Date;
 import java.util.Set;
 
 import banking.accounts.domain.entity.BankAccount;
@@ -11,6 +12,8 @@ public class Customer {
     private Boolean isActive;
     private String identityDocument;
     private Set<BankAccount> bankAccounts;
+    private Date auditCreate;
+    private Date auditUpdate;
 
 	public Customer() {
     }
@@ -66,5 +69,21 @@ public class Customer {
 	public void setIdentityDocument(String identityDocument) {
 		this.identityDocument = identityDocument;
 	}
-    
+
+	public Date getAuditCreate() {
+		return auditCreate;
+	}
+
+	public void setAuditCreate(Date auditCreate) {
+		this.auditCreate = auditCreate;
+	}
+
+	public Date getAuditUpdate() {
+		return auditUpdate;
+	}
+
+	public void setAuditUpdate(Date auditUpdate) {
+		this.auditUpdate = auditUpdate;
+	}
+    	
 }

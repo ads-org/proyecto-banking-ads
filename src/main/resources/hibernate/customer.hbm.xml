@@ -11,6 +11,8 @@
         <property name="lastName" column="last_name"/>
         <property name="isActive" column="active"/>
         <property name="identityDocument" column="identity_document"/>
+        <property name="auditCreate" column="created_at_utc"/>
+        <property name="auditUpdate" column="updated_at_utc"/>
         <set name="bankAccounts" inverse="true" cascade="all">
             <key column="customer_id" not-null="true"/>
             <one-to-many class="banking.accounts.domain.entity.BankAccount"/>
