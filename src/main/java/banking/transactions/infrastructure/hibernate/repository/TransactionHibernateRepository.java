@@ -46,11 +46,11 @@ public class TransactionHibernateRepository extends BaseHibernateRepository<Tran
 		sql.append("WHERE (b.`number` = :accountNumber OR c.`number` = :accountNumber) ");
 						
 		if (startDate != null) {
-			sql.append("AND a.date_transfer >= :fechaInicio ");			
+			sql.append("AND DATE(CONVERT_TZ(a.date_transfer,'+00:00','-05:00')) >= :fechaInicio ");			
 		}
 		
 		if (endDate != null) {
-			sql.append("AND a.date_transfer < :fechaFin  ");			
+			sql.append("AND DATE(CONVERT_TZ(a.date_transfer,'+00:00','-05:00')) <= :fechaFin  ");			
 		}
 		
 		sql.append("ORDER BY a.date_transfer DESC ");

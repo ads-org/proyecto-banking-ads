@@ -1,6 +1,7 @@
 package banking.accounts.domain.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import banking.common.application.Notification;
 import banking.customers.domain.entity.Customer;
@@ -11,6 +12,8 @@ public class BankAccount {
     private BigDecimal balance;
     private boolean isLocked;
     private Customer customer;
+    private Date auditCreate;
+    private Date auditUpdate;
 
     public BankAccount() {
     }
@@ -133,4 +136,21 @@ public class BankAccount {
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }
+
+	public Date getAuditCreate() {
+		return auditCreate;
+	}
+
+	public void setAuditCreate(Date auditCreate) {
+		this.auditCreate = auditCreate;
+	}
+
+	public Date getAuditUpdate() {
+		return auditUpdate;
+	}
+
+	public void setAuditUpdate(Date auditUpdate) {
+		this.auditUpdate = auditUpdate;
+	}
+    
 }

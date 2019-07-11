@@ -11,6 +11,7 @@ public class CustomerDto {
 	private String firstName;
 	private String lastName;
 	private Boolean isActive;
+	private String identityDocument;
 	private Set<BankAccountDto> bankAccountsDto;
 	
 	public CustomerDto() {
@@ -56,4 +57,13 @@ public class CustomerDto {
 	public void setBankAccountsDto(Set<BankAccountDto> bankAccountsDto) {
 		this.bankAccountsDto = bankAccountsDto;
 	}
+
+	public String getIdentityDocument() {
+		return identityDocument;
+	}
+
+	public void setIdentityDocument(String identityDocument) {
+		this.identityDocument = identityDocument;
+	}
+	
 }
