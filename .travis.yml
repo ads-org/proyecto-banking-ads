@@ -1,6 +1,6 @@
 language: java
 sudo: true
-jdk: oraclejdk8
+jdk: openjdk8
 addons:
   sonarcloud:
     organization: ads-org
